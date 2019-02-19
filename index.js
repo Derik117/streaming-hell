@@ -38,9 +38,9 @@ bot.on('message', async (ctx) => {
                         let links = '';
                         data.songlink.links.listen.forEach(item => {
                             const name = readableNames[item.name] || item.name;
-                            links = `${links}\n${name}\n${item.data.listenUrl}\n`;
+                            links = `${links}\n[${name}](${item.data.listenUrl})\n`;
                         });
-                        ctx.reply(links);
+                        ctx.reply(links, {parse_mode: 'markdown'});
                         ctx.reply('👋 Готово!');
                     } else {
                         ctx.reply('😣 Кажется у меня нет данных по этой ссылке. Убедись, что адрес верный.');
