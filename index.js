@@ -2,6 +2,19 @@ require('dotenv').config();
 const Telegraf = require('telegraf');
 const getData = require('./getData');
 const validator = require('validator');
+const readableNames = {
+    yandex: 'Yandex',
+    spotify: 'Spotify',
+    appleMusic: 'Apple Music',
+    youtubeMusic: 'YouTube Music',
+    youtube: 'YouTube',
+    pandora: 'Pandora',
+    google: 'Google',
+    deezer: 'Deezer',
+    tidal: 'Tidal',
+    napster: 'Napster',
+    fanburst: 'Fanburst',
+};
 
 const bot = new Telegraf(process.env.TOKEN);
 bot.start((ctx) => {
@@ -24,7 +37,8 @@ bot.on('message', async (ctx) => {
                     if (data) {
                         let links = '';
                         data.songlink.links.listen.forEach(item => {
-                            links = `${links}\n${item.name}\n${item.data.listenUrl}\n`;
+                            const name = readableNames[item.name] || item.name;
+                            links = `${links}\n${name}\n${item.data.listenUrl}\n`;
                         });
                         ctx.reply(links);
                         ctx.reply('👋 Готово!');
