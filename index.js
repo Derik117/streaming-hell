@@ -33,9 +33,19 @@ bot.on('message', async (ctx) => {
             if (validator.isURL(message)) {
                 const sendLinks = async () => {
                     ctx.reply('🚬 Подождите немного, пока я ищу ссылки...');
-                    const data = await getData({ link: message });
+                    const data = await getData({link: message});
                     if (data) {
                         let links = '';
+                        data.songlink.links.listen.sort((a, b) => {
+                            const nameA = readableNames[a.name] || a.name;
+                            const nameB = readableNames[b.name] || b.name;
+                            if (nameA > nameB) {
+                                return 1;
+                            } else if (nameA < nameB) {
+                                return -1;
+                            }
+                            return 0;
+                        });
                         data.songlink.links.listen.forEach(item => {
                             const name = readableNames[item.name] || item.name;
                             links = `${links}\n[${name}](${item.data.listenUrl})\n`;
